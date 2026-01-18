@@ -82,7 +82,10 @@ export function About() {
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{
+              duration: 0.6,
+              delay: 0.2
+            }}
           >
             <h3 className="text-3xl font-bold text-foreground mb-6">
               {t('about.subtitle1')}<br />
@@ -101,7 +104,10 @@ export function About() {
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{
+              duration: 0.6,
+              delay: 0.4
+            }}
             className="space-y-6"
           >
             {highlights.map((item, index) => (
@@ -109,7 +115,11 @@ export function About() {
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.2 * index + 0.4 }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.1 * index + 0.6
+                }}
+                whileTap={{ scale: 0.98 }}
                 className={`p-6 rounded-xl bg-foreground/5 border border-foreground/10 backdrop-blur-sm hover:bg-foreground/10 transition-all duration-300 ${item.isClickable ? 'cursor-pointer select-none group/item' : ''}`}
                 onClick={() => {
                   if (item.isClickable) setIsModalOpen(true);
@@ -139,9 +149,12 @@ export function About() {
 
         {/* Bottom stats */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.6 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{
+            duration: 0.6,
+            delay: 0.8
+          }}
           className="grid grid-cols-2 md:grid-cols-4 gap-6"
         >
           {stats.map((stat, index) => (
@@ -157,6 +170,7 @@ export function About() {
           ))}
         </motion.div>
       </div>
+
       {/* Academic Timeline Modal */}
       <AnimatePresence>
         {isModalOpen && (

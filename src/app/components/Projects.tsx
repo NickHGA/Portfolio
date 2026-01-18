@@ -96,14 +96,13 @@ export function Projects() {
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
               <div
-                className="relative p-8 rounded-2xl bg-gradient-to-br from-foreground/5 to-foreground/[0.02] border border-foreground/10 backdrop-blur-sm hover:border-foreground/20 transition-all duration-300 overflow-hidden cursor-pointer"
+                className="relative p-8 rounded-2xl bg-gradient-to-br from-foreground/5 to-foreground/[0.02] border border-foreground/10 backdrop-blur-sm hover:border-foreground/20 transition-all duration-500 overflow-hidden cursor-pointer"
                 onClick={() => {
-                  // Simulate opening details or code - in a real app this would navigate
                   console.log(`Navigating to ${project.title}`);
                 }}
               >
                 {/* Gradient overlay on hover */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
+                <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
 
                 {/* Content */}
                 <div className="relative z-10">
@@ -126,12 +125,12 @@ export function Projects() {
                   {/* Problem & Solution */}
                   <div className="space-y-3 mb-6">
                     <div>
-                      <span className="text-xs text-red-400 font-semibold uppercase">{t('projects.problem')}</span>
-                      <p className="text-sm text-muted-foreground mt-1">{project.problem}</p>
+                      <span className="text-xs text-red-400 font-semibold uppercase tracking-tighter">{t('projects.problem')}</span>
+                      <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{project.problem}</p>
                     </div>
                     <div>
-                      <span className="text-xs text-green-400 font-semibold uppercase">{t('projects.solution')}</span>
-                      <p className="text-sm text-muted-foreground mt-1">{project.solution}</p>
+                      <span className="text-xs text-green-400 font-semibold uppercase tracking-tighter">{t('projects.solution')}</span>
+                      <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{project.solution}</p>
                     </div>
                   </div>
 
@@ -151,22 +150,22 @@ export function Projects() {
                   {/* Links */}
                   <div className="flex items-center gap-4">
                     <motion.button
-                      className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors pointer-events-auto"
-                      whileHover={{ x: 5 }}
+                      className="flex items-center gap-2 text-sm text-primary font-bold hover:text-primary/80 transition-colors pointer-events-auto"
+                      whileHover={{ x: 3 }}
+                      whileTap={{ scale: 0.95 }}
                       onClick={(e) => {
                         e.stopPropagation();
-                        // Handle details click
                       }}
                     >
                       <ExternalLink className="w-4 h-4" />
                       {t('projects.details')}
                     </motion.button>
                     <motion.button
-                      className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors pointer-events-auto"
-                      whileHover={{ x: 5 }}
+                      className="flex items-center gap-2 text-sm text-muted-foreground font-bold hover:text-foreground transition-colors pointer-events-auto"
+                      whileHover={{ x: 3 }}
+                      whileTap={{ scale: 0.95 }}
                       onClick={(e) => {
                         e.stopPropagation();
-                        // Handle code click
                       }}
                     >
                       <Github className="w-4 h-4" />

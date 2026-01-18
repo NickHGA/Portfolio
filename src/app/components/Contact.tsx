@@ -1,13 +1,13 @@
 import { motion, AnimatePresence, useInView } from 'motion/react';
 import { useRef, useState, FormEvent } from 'react';
-import { Mail, Github, Linkedin, Send, MessageSquare, Phone, Facebook, Instagram, Twitter, MessageCircle, Copy, Check, X } from 'lucide-react';
+import { Mail, Github, Linkedin, Send, MessageSquare, Phone, Facebook, Instagram, Twitter, MessageCircle, Copy, Check, X, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../provider/LanguageContext';
 
 export function Contact() {
   const { t } = useLanguage();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [activeInfo, setActiveInfo] = useState<string | null>(null);
+  const [activeSocial, setActiveSocial] = useState<any>(null);
   const [copied, setCopied] = useState(false);
 
   const handleCopy = (text: string) => {
@@ -57,6 +57,7 @@ export function Contact() {
       icon: MessageCircle,
       label: 'WhatsApp',
       info: '+229 53 93 47 04',
+      link: 'https://wa.me/22953934704',
       color: 'hover:text-green-500',
     },
     {
@@ -64,8 +65,7 @@ export function Contact() {
       label: 'Téléphone',
       link: 'tel:+2290153934704',
       color: 'hover:text-green-500',
-      info: '+229 01 53 93 47 04',
-      info: '+229 01 44 67 84 10',
+      info: '+229 01 53 93 47 04 / +229 01 44 67 84 10',
     },
     {
       icon: Github,
@@ -84,21 +84,21 @@ export function Contact() {
     {
       icon: Facebook,
       label: 'Facebook',
-      link: '#', // À remplacer par votre lien
+      link: '#',
       color: 'hover:text-blue-500',
       info: 'En attente',
     },
     {
       icon: Instagram,
       label: 'Instagram',
-      link: '#', // À remplacer par votre lien
+      link: '#',
       color: 'hover:text-pink-500',
       info: 'En attente',
     },
     {
       icon: Twitter,
       label: 'Twitter',
-      link: '#', // À remplacer par votre lien
+      link: '#',
       color: 'hover:text-sky-400',
       info: 'En attente',
     },
@@ -140,19 +140,22 @@ export function Contact() {
               className="flex flex-wrap justify-center gap-6"
             >
               {socialLinks.map((social, index) => (
-                <div key={index} className="relative group">
+                <div
+                  key={index}
+                  className="relative group"
+                >
                   <a
                     href={social.link || '#'}
                     onClick={(e) => {
-                      if (!social.link && social.info) {
-                        e.preventDefault();
-                        setActiveInfo(activeInfo === social.info ? null : social.info);
+                      e.preventDefault();
+                      if (social.info) {
+                        setActiveSocial(activeSocial?.label === social.label ? null : social);
                       }
                     }}
                     target={social.link ? "_blank" : undefined}
                     rel={social.link ? "noopener noreferrer" : undefined}
                     onMouseEnter={() => {
-                      if (social.info) setActiveInfo(social.info);
+                      if (social.info) setActiveSocial(social);
                     }}
                     className={`p-4 rounded-2xl bg-foreground/5 border border-foreground/10 transition-all duration-300 flex items-center justify-center hover:bg-foreground/10 ${social.color} text-muted-foreground hover:scale-110 active:scale-95`}
                   >
@@ -165,25 +168,36 @@ export function Contact() {
             {/* Info display area */}
             <div className="h-12 mt-6 flex items-center justify-center">
               <AnimatePresence mode="wait">
-                {activeInfo && (
+                {activeSocial && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     className="flex items-center gap-4 px-6 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm shadow-xl shadow-primary/5"
                   >
-                    <span className="text-foreground font-bold tracking-wider">{activeInfo}</span>
+                    <span className="text-foreground font-bold tracking-wider">{activeSocial.info}</span>
                     <div className="flex items-center gap-1 border-l border-primary/20 pl-2 ml-1">
                       <button
-                        onClick={() => handleCopy(activeInfo)}
+                        onClick={() => handleCopy(activeSocial.info)}
                         className="p-1.5 rounded-lg hover:bg-primary/20 transition-colors group/copy"
                         title="Copier"
                       >
                         {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4 text-primary group-hover/copy:scale-110 transition-transform" />}
                       </button>
+                      {activeSocial.link && activeSocial.link !== '#' && (
+                        <a
+                          href={activeSocial.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-1.5 rounded-lg hover:bg-primary/20 transition-colors group/link"
+                          title="Visiter"
+                        >
+                          <ExternalLink className="w-4 h-4 text-primary group-hover/link:scale-110 transition-transform" />
+                        </a>
+                      )}
                       <button
                         onClick={() => {
-                          setActiveInfo(null);
+                          setActiveSocial(null);
                         }}
                         className="p-1.5 rounded-lg hover:bg-red-500/20 transition-colors group/close"
                         title="Fermer"

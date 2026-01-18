@@ -17,9 +17,8 @@ const pageVariants = {
 };
 
 const pageTransition = {
-  type: "spring" as const,
-  stiffness: 300,
-  damping: 30
+  duration: 0.6,
+  ease: [0.43, 0.13, 0.23, 0.96] as const
 };
 
 export default function App() {
@@ -68,8 +67,11 @@ export default function App() {
           <motion.div
             key="content"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{
+              duration: 0.8,
+              ease: "easeOut"
+            }}
           >
             <Navigation
               onMenuClick={toggleMenu}

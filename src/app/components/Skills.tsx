@@ -121,7 +121,7 @@ export function Skills() {
                   {category.skills.map((skill, skillIndex) => (
                     <div key={skillIndex}>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm text-muted-foreground">{skill.name}</span>
+                        <span className="text-sm text-muted-foreground font-medium">{skill.name}</span>
                         <span className="text-xs text-muted-foreground">{skill.level}%</span>
                       </div>
                       <div className="h-2 bg-foreground/5 rounded-full overflow-hidden">
