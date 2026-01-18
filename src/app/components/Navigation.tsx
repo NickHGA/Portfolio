@@ -1,113 +1,114 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
+import { MoreHorizontal, X, Sun, Moon, Languages } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { useLanguage } from '../provider/LanguageContext';
 
-export function Navigation() {
-  const [activeSection, setActiveSection] = useState('home');
+interface NavigationProps {
+  onMenuClick: () => void;
+  onHomeClick: () => void;
+  isMenuOpen: boolean;
+}
+
+export function Navigation({ onMenuClick, onHomeClick, isMenuOpen }: NavigationProps) {
   const [scrolled, setScrolled] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const { language, setLanguage } = useLanguage();
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
-
-      // Update active section based on scroll position
-      const sections = ['home', 'about', 'projects', 'skills', 'vision', 'contact'];
-      const currentSection = sections.find(section => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 150 && rect.bottom >= 150;
-        }
-        return false;
-      });
-      if (currentSection) {
-        setActiveSection(currentSection);
-      }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+  const toggleLanguage = () => {
+    setLanguage(language === 'fr' ? 'en' : 'fr');
   };
-
-  const navItems = [
-    { id: 'home', label: 'Accueil' },
-    { id: 'about', label: 'À propos' },
-    { id: 'projects', label: 'Projets' },
-    { id: 'skills', label: 'Compétences' },
-    { id: 'vision', label: 'Vision' },
-    { id: 'contact', label: 'Contact' },
-  ];
 
   return (
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-black/80 backdrop-blur-lg border-b border-white/10'
-          : 'bg-transparent'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
+        ? 'bg-background/80 backdrop-blur-lg border-b border-foreground/10'
+        : 'bg-transparent'
+        }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <motion.div
+          <motion.button
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="font-bold text-xl bg-gradient-to-r from-blue-500 to-violet-500 bg-clip-text text-transparent"
+            onClick={onHomeClick}
+            className="font-bold text-xl bg-gradient-to-r from-primary to-violet-500 bg-clip-text text-transparent hover:scale-105 transition-transform"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             HOUAGA Primel
-          </motion.div>
+          </motion.button>
 
-          {/* Nav Links */}
-          <div className="hidden md:flex items-center gap-8">
-            {navItems.map((item, index) => (
+          {/* Controls */}
+          <div className="flex items-center gap-3">
+            {/* Theme Toggle */}
+            {mounted && (
               <motion.button
-                key={item.id}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * index }}
-                onClick={() => scrollToSection(item.id)}
-                className={`relative text-sm transition-colors ${
-                  activeSection === item.id
-                    ? 'text-blue-400'
-                    : 'text-gray-400 hover:text-white'
-                }`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="p-2 rounded-lg hover:bg-foreground/10 transition-colors"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
               >
-                {item.label}
-                {activeSection === item.id && (
-                  <motion.div
-                    layoutId="activeSection"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-violet-500"
-                  />
+                {theme === 'dark' ? (
+                  <Sun className="w-5 h-5 text-yellow-500" />
+                ) : (
+                  <Moon className="w-5 h-5 text-primary" />
                 )}
               </motion.button>
-            ))}
-          </div>
+            )}
 
-          {/* Mobile Menu Button */}
-          <button className="md:hidden text-white">
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+            {/* Language Toggle */}
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              onClick={toggleLanguage}
+              className="flex items-center justify-center min-w-[44px] h-[44px] rounded-lg bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-primary/50 transition-all duration-300"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
+              <span className="text-sm font-bold text-foreground">
+                {language.toUpperCase()}
+              </span>
+            </motion.button>
+
+            {/* Menu Toggle */}
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              onClick={onMenuClick}
+              className="relative p-3 rounded-xl bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-primary/50 transition-all duration-300 z-50"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <motion.div
+                animate={{ rotate: isMenuOpen ? 90 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {isMenuOpen ? (
+                  <X className="w-6 h-6 text-primary" />
+                ) : (
+                  <MoreHorizontal className="w-6 h-6 text-foreground" />
+                )}
+              </motion.div>
+            </motion.button>
+          </div>
         </div>
       </div>
     </motion.nav>

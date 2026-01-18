@@ -2,59 +2,71 @@ import { motion } from 'motion/react';
 import { useInView } from 'motion/react';
 import { useRef } from 'react';
 import { ExternalLink, Github, Database, Globe, Gamepad2, LayoutDashboard } from 'lucide-react';
+import { useLanguage } from '../provider/LanguageContext';
 
 export function Projects() {
+  const { t } = useLanguage();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   const projects = [
     {
       title: 'SchoolHub',
-      category: 'Plateforme de gestion',
-      description: 'Système de gestion de présence intelligent avec API backend, dashboard interactif, génération de rapports PDF et notifications automatiques',
-      problem: 'Gestion manuelle inefficace des présences scolaires',
-      solution: 'Automatisation complète avec interface intuitive et rapports en temps réel',
+      category: t('projects.schoolhub.cat'),
+      description: t('projects.schoolhub.desc'),
+      problem: t('projects.schoolhub.prob'),
+      solution: t('projects.schoolhub.sol'),
       tech: ['Laravel', 'React', 'MySQL', 'API REST', 'PDF Generation'],
       icon: LayoutDashboard,
       gradient: 'from-blue-500 to-cyan-500',
     },
     {
-      title: 'Applications Django',
-      category: 'Backend & API',
-      description: 'Développement d\'applications web robustes avec Django, incluant authentification JWT, gestion de bases de données et API RESTful',
-      problem: 'Besoin de solutions backend scalables et sécurisées',
-      solution: 'Architecture propre avec Django et bonnes pratiques de développement',
-      tech: ['Django', 'Python', 'SQLite', 'JWT Auth', 'API REST'],
+      title: 'Medipass',
+      category: t('projects.medipass.cat'),
+      description: t('projects.medipass.desc'),
+      problem: t('projects.medipass.prob'),
+      solution: t('projects.medipass.sol'),
+      tech: ['C++', 'Java', 'POO', 'UML', 'Console App'],
       icon: Database,
       gradient: 'from-green-500 to-emerald-500',
     },
     {
-      title: 'Applications Laravel',
-      category: 'Full Stack',
-      description: 'Création de plateformes web complètes avec Laravel, incluant authentification, gestion de contenu et dashboards administratifs',
-      problem: 'Développement rapide d\'applications web professionnelles',
-      solution: 'Framework Laravel pour un développement structuré et efficace',
-      tech: ['Laravel', 'PHP', 'MySQL', 'Blade', 'MVC'],
+      title: 'SondagePro',
+      category: t('projects.sondagepro.cat'),
+      description: t('projects.sondagepro.desc'),
+      problem: t('projects.sondagepro.prob'),
+      solution: t('projects.sondagepro.sol'),
+      tech: ['Python (Django)', 'MySQL', 'HTML/CSS/JS', 'Data Collection'],
       icon: Globe,
       gradient: 'from-red-500 to-orange-500',
     },
     {
-      title: 'Projets Pygame',
-      category: 'Développement de jeux',
-      description: 'Création de jeux interactifs avec Pygame, implémentation de logique algorithmique et gestion d\'événements',
-      problem: 'Apprentissage ludique de la programmation et de la logique',
-      solution: 'Jeux engageants avec mécanique solide et interface intuitive',
-      tech: ['Python', 'Pygame', 'Algorithmes', 'Game Design'],
+      title: 'IFRI_comotorage',
+      category: t('projects.comotorage.cat'),
+      description: t('projects.comotorage.desc'),
+      problem: t('projects.comotorage.prob'),
+      solution: t('projects.comotorage.sol'),
+      tech: ['Python (Django/Flask)', 'MySQL', 'Tailwind', 'Matching Algorithm'],
       icon: Gamepad2,
       gradient: 'from-violet-500 to-purple-500',
+    },
+    {
+      title: 'Objectif 2026',
+      category: t('projects.objectif2026.cat'),
+      description: t('projects.objectif2026.desc'),
+      problem: t('projects.objectif2026.prob'),
+      solution: t('projects.objectif2026.sol'),
+      tech: ['React', 'TypeScript', 'Tailwind', 'Framer Motion'],
+      icon: LayoutDashboard,
+      gradient: 'from-amber-500 to-orange-500',
     },
   ];
 
   return (
-    <section id="projects" className="relative py-32 bg-black overflow-hidden">
+    <section id="projects" className="relative py-32 bg-background overflow-hidden">
       {/* Background elements */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f08_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f08_1px,transparent_1px)] bg-[size:4rem_4rem]" />
-      
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+
       <div className="relative max-w-7xl mx-auto px-6" ref={ref}>
         {/* Section header */}
         <motion.div
@@ -63,12 +75,12 @@ export function Projects() {
           transition={{ duration: 0.6 }}
           className="text-center mb-20"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Projets réalisés
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            {t('projects.title')}
           </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-violet-500 mx-auto mb-6" />
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            De la théorie à la pratique : solutions concrètes pour des problèmes réels
+          <div className="w-20 h-1 bg-gradient-to-r from-primary to-violet-500 mx-auto mb-6" />
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            {t('projects.subtitle')}
           </p>
         </motion.div>
 
@@ -81,59 +93,85 @@ export function Projects() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.1 * index }}
               className="group relative"
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
-              <div className="relative p-8 rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 backdrop-blur-sm hover:border-white/20 transition-all duration-300 overflow-hidden">
+              <div
+                className="relative p-8 rounded-2xl bg-gradient-to-br from-foreground/5 to-foreground/[0.02] border border-foreground/10 backdrop-blur-sm hover:border-foreground/20 transition-all duration-300 overflow-hidden cursor-pointer"
+                onClick={() => {
+                  // Simulate opening details or code - in a real app this would navigate
+                  console.log(`Navigating to ${project.title}`);
+                }}
+              >
                 {/* Gradient overlay on hover */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
-                
+                <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
+
                 {/* Content */}
                 <div className="relative z-10">
                   {/* Icon & Category */}
                   <div className="flex items-center justify-between mb-6">
-                    <div className={`p-3 rounded-xl bg-gradient-to-br ${project.gradient} bg-opacity-10`}>
-                      <project.icon className={`w-6 h-6 text-white`} />
-                    </div>
-                    <span className="text-xs text-gray-500 uppercase tracking-wider">{project.category}</span>
+                    <motion.div
+                      className={`p-3 rounded-xl bg-gradient-to-br ${project.gradient} bg-opacity-10`}
+                      whileHover={{ rotate: 360, scale: 1.1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <project.icon className={`w-6 h-6 text-primary-foreground`} />
+                    </motion.div>
+                    <span className="text-xs text-muted-foreground uppercase tracking-wider">{project.category}</span>
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="text-2xl font-bold text-white mb-3">{project.title}</h3>
-                  <p className="text-gray-400 mb-6">{project.description}</p>
+                  <h3 className="text-2xl font-bold text-foreground mb-3">{project.title}</h3>
+                  <p className="text-muted-foreground mb-6">{project.description}</p>
 
                   {/* Problem & Solution */}
                   <div className="space-y-3 mb-6">
                     <div>
-                      <span className="text-xs text-red-400 font-semibold uppercase">Problème</span>
-                      <p className="text-sm text-gray-400 mt-1">{project.problem}</p>
+                      <span className="text-xs text-red-400 font-semibold uppercase">{t('projects.problem')}</span>
+                      <p className="text-sm text-muted-foreground mt-1">{project.problem}</p>
                     </div>
                     <div>
-                      <span className="text-xs text-green-400 font-semibold uppercase">Solution</span>
-                      <p className="text-sm text-gray-400 mt-1">{project.solution}</p>
+                      <span className="text-xs text-green-400 font-semibold uppercase">{t('projects.solution')}</span>
+                      <p className="text-sm text-muted-foreground mt-1">{project.solution}</p>
                     </div>
                   </div>
 
                   {/* Tech stack */}
                   <div className="flex flex-wrap gap-2 mb-6">
                     {project.tech.map((tech, techIndex) => (
-                      <span
+                      <motion.span
                         key={techIndex}
-                        className="px-3 py-1 text-xs rounded-full bg-white/5 border border-white/10 text-gray-300"
+                        className="px-3 py-1 text-xs rounded-full bg-foreground/5 border border-foreground/10 text-muted-foreground"
+                        whileHover={{ scale: 1.1, backgroundColor: "rgba(var(--primary), 0.1)" }}
                       >
                         {tech}
-                      </span>
+                      </motion.span>
                     ))}
                   </div>
 
                   {/* Links */}
                   <div className="flex items-center gap-4">
-                    <button className="flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors">
+                    <motion.button
+                      className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors pointer-events-auto"
+                      whileHover={{ x: 5 }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // Handle details click
+                      }}
+                    >
                       <ExternalLink className="w-4 h-4" />
-                      Détails
-                    </button>
-                    <button className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors">
+                      {t('projects.details')}
+                    </motion.button>
+                    <motion.button
+                      className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors pointer-events-auto"
+                      whileHover={{ x: 5 }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // Handle code click
+                      }}
+                    >
                       <Github className="w-4 h-4" />
-                      Code
-                    </button>
+                      {t('projects.code')}
+                    </motion.button>
                   </div>
                 </div>
               </div>
@@ -148,15 +186,15 @@ export function Projects() {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="text-center mt-16"
         >
-          <p className="text-gray-400 mb-4">Plus de projets disponibles sur GitHub</p>
+          <p className="text-muted-foreground mb-4">{t('projects.cta')}</p>
           <a
             href="https://github.com/NickHGA"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-6 py-3 bg-white/5 border border-white/10 text-white rounded-lg hover:bg-white/10 backdrop-blur-sm transition-all duration-300 inline-flex items-center gap-2"
+            className="px-6 py-3 bg-foreground/5 border border-foreground/10 text-foreground rounded-lg hover:bg-foreground/10 backdrop-blur-sm transition-all duration-300 inline-flex items-center gap-2"
           >
             <Github className="w-5 h-5" />
-            Voir tous les projets
+            {t('projects.ctaBtn')}
           </a>
         </motion.div>
       </div>
